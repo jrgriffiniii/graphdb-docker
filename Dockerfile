@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk
 
 # Build time arguments
-ARG version=8.11.0
+ARG version=9.0.0
 ARG edition=free
 
 ENV GRAPHDB_PARENT_DIR=/opt/graphdb
@@ -19,17 +19,6 @@ RUN mkdir -p ${GRAPHDB_PARENT_DIR} && \
     mkdir -p ${GRAPHDB_HOME}
 
 ENV PATH=${GRAPHDB_INSTALL_DIR}/bin:$PATH
-CMD ["-Dgraphdb.home=/opt/graphdb/home"]
+CMD ["-Dgraphdb.home=/opt/graphdb/home -Dgraphdb.workbench.cors.enable=true"]
 ENTRYPOINT ["/opt/graphdb/dist/bin/graphdb"]
-
-# Create the repository
-#RUN apt-get update && apt-get install -y\
-#    curl
-
-# ADD repo-config.ttl /tmp
-#RUN curl -X POST\
-#    http://localhost:7200/rest/repositories\
-#    -H 'Content-Type: multipart/form-data'\
-#    -F "config=@/tmp/repo-config.ttl"
-
 EXPOSE 7200
